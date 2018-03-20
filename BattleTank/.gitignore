@@ -1,5 +1,6 @@
 # Custom Additions
 *.umap
+*.uasset
 
 # Visual Studio 2015 user specific files
 .vs/
