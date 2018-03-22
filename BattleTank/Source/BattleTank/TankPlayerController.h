@@ -4,6 +4,7 @@
 
 #include "Tank.h"
 #include "CoreMinimal.h"
+//#include "GameFramework/Actor.h"
 #include "GameFramework/PlayerController.h"
 #include "TankPlayerController.generated.h"
 
@@ -18,11 +19,14 @@ class BATTLETANK_API ATankPlayerController : public APlayerController
 	
 public:
 	ATank* GetControlledTank() const;
+	ATankPlayerController();
 
 	virtual void BeginPlay() override;
+	virtual void Tick(float) override;
 
 private:
 
+	void AimTowardsCrosshair();
 
 	
 	
