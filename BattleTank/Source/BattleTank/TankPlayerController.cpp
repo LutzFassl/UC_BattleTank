@@ -29,9 +29,6 @@ void ATankPlayerController::BeginPlay()
 void ATankPlayerController::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
-	//UE_LOG(LogTemp, Warning, TEXT("PlayerController is ticking")); // TEST Ticking
-
 	AimTowardsCrosshair();
 }
 
@@ -44,7 +41,7 @@ void ATankPlayerController::AimTowardsCrosshair()
 	FVector HitLocation; // Out Parameter
 	if (GetSightRayHitLocation(HitLocation))
 	{
-		//UE_LOG(LogTemp, Warning, TEXT("Vector HitLocation: %s"), *HitLocation.ToString()); // TEST Ticking
+		UE_LOG(LogTemp, Warning, TEXT("Vector HitLocation: %s"), *HitLocation.ToString()); // TEST Ticking
 	}
 
 	
@@ -66,56 +63,51 @@ bool ATankPlayerController::GetSightRayHitLocation(FVector& HitLocation) const
 	
 	// Deproject = Calculate 3D Location from Crosshair
 	FVector LookDirection;
-	FVector CameraWorldLocation;
-	if (GetLookDirection(ScreenLocation, CameraWorldLocation, LookDirection))
+	if (GetLookDirection(ScreenLocation, LookDirection))
 	{
-		//// Ray-Casting / Line Tracing
-		GetLookVectorHitLocation(CameraWorldLocation, LookDirection);
+		// Ray-Casting / Line Tracing
+		GetLookVectorHitLocation(LookDirection,HitLocation);
 	}
 
 	return true;
 }
 
 // Calculate 3D Look direction from 2D Crosshair position. Use OUT Parameter LookDirection
-bool ATankPlayerController::GetLookDirection(FVector2D ScreenLocation, FVector &CameraWorldLocation, FVector & LookDirection) const
+bool ATankPlayerController::GetLookDirection(FVector2D ScreenLocation, FVector & LookDirection) const	// TODO really need cameraworldlocation?
 {
-	
+	FVector CameraWorldLocation;
 	if (DeprojectScreenPositionToWorld(ScreenLocation.X, ScreenLocation.Y, CameraWorldLocation, LookDirection)) { return true; }
 	
-
 	return false;
 }
 
-bool ATankPlayerController::GetLookVectorHitLocation(FVector &Location, FVector & LookDirection) const	//needs position and direction
+bool ATankPlayerController::GetLookVectorHitLocation(FVector LookDirection, FVector& HitLocation) const	//needs position and direction
 {
-	FCollisionQueryParams TraceParameters(FName(TEXT("")), false, GetOwner());
-	FCollisionResponseParams ResponseParam(ECollisionResponse::ECR_Overlap);
+	//FCollisionQueryParams TraceParameters(FName(TEXT("")), false, GetOwner());	//Definition of optional parameters not necessary
+	//FCollisionResponseParams ResponseParam(ECollisionResponse::ECR_Overlap);		//Definition of optional parameters not necessary
 
-	DrawDebugLine(GetWorld(), Location + LookDirection.GetSafeNormal() * 2000, LookDirection.GetSafeNormal() * 1000000, FColor(255, 0, 255), false, 0.f, 0.f, 25.f);
+	auto StartLocation = PlayerCameraManager->GetCameraLocation();
+	auto EndLocation = StartLocation + LookDirection * LineTraceRange;	// No Normalization necessary, already Unit vector; 1 unit = 1cm; multiplied with 1'000'000 to set length to 10km
 
+
+	//DrawDebugLine(GetWorld(), StartLocation + LookDirection * 2000, EndLocation, FColor(255, 0, 255), false, 0.f, 0.f, 25.f);
 
 	FHitResult HitResult;
-	bool DidWork = GetWorld()->LineTraceSingleByChannel(
+	if (GetWorld()->LineTraceSingleByChannel(		// Channel because it doesn't matter WHAT we're hitting, only WHERE we hit
 		HitResult,
-		Location,
-		LookDirection.GetSafeNormal() * 1000000,		// Normalized to 1 unit = 1cm; multiplied with 1'000'000 to set length to 10km
-		ECollisionChannel::ECC_Visibility,
-		TraceParameters,
-		ResponseParam);
-
-	// See what we hit
-	AActor* ActorHit = HitResult.GetActor();
-	if (ActorHit)
+		StartLocation,
+		EndLocation,
+		ECollisionChannel::ECC_Visibility
+		//TraceParameters,		--> not necessary OPTIONAL
+		//ResponseParam			--> not necessary OPTIONAL
+	)) 
 	{
-		UE_LOG(LogTemp, Warning, TEXT("We hit the: %s"), *ActorHit->GetName()); // TEST Ticking
-		//UE_LOG(LogTemp, Warning, TEXT("We hit the %s at: %s"), *ActorHit->GetName(), *HitLocation.ToString()); // TEST Ticking
-	}
-	else
-	{
-		UE_LOG(LogTemp, Warning, TEXT("We hit nothing")); // TEST Ticking
+		HitLocation =	HitResult.Location;
+		return true;
 	}
 	
-	return DidWork;
+	return false;
+	HitLocation = FVector(0);
 }
 
 ATank* ATankPlayerController::GetControlledTank() const
