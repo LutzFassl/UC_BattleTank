@@ -41,11 +41,14 @@ void ATankPlayerController::AimTowardsCrosshair()
 	if(!GetControlledTank())	{	return;	} // get out if no tank
 
 	FVector HitLocation; // Out Parameter
-	if (GetSightRayHitLocation(HitLocation));
+	if (GetSightRayHitLocation(HitLocation))
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Vector HitLocation: %s"), *HitLocation.ToString()); // TEST Ticking
+	}
 
 	//if (GetSightRayHitLocation()) { UE_LOG(LogTemp, Warning, TEXT("I'm hitting something")); } // TEST Ticking; }
 
-	UE_LOG(LogTemp, Warning, TEXT("Vector HitLocation: %s"), *HitLocation.ToString()); // TEST Ticking
+	
 
 	// Get world location of linetrace through crosshair
 	// If it hits the landscape
@@ -55,41 +58,8 @@ void ATankPlayerController::AimTowardsCrosshair()
 bool ATankPlayerController::GetSightRayHitLocation(FVector& HitLocation) const
 {
 	
-	
-	// Out the FVector Hitlocation
-	FVector PlayerViewPointLocation = FVector(5000.f, 100.f,1000.f);
-	FRotator PlayerViewPointRotation;
-	FVector endvector = FVector(100000.f, 100.f, 1000.f);
-	
-	FHitResult HitResult;
-
-	GetOwner()->GetActorEyesViewPoint(
-		OUT PlayerViewPointLocation,		// OUT does nothing (see include above), just to highlight where input parameters are changed
-		OUT PlayerViewPointRotation
-	);
-
-	endvector = PlayerViewPointLocation + PlayerViewPointRotation.Vector() * 100; //+ FVector(0.f, 0.f, Reach);
-
-	FCollisionQueryParams TraceParameters(FName(TEXT("")), false, GetOwner());
-
-	DrawDebugLine(GetWorld(), PlayerViewPointLocation, endvector, FColor(255, 0, 255), false, 0.f, 0.f, 20.f);
-	
-	bool DidWork = GetWorld()->LineTraceSingleByObjectType(
-		HitResult,
-		PlayerViewPointLocation,
-		endvector,
-		FCollisionObjectQueryParams(ECollisionChannel::ECC_WorldStatic),	// TODO aim for world or tanks, like physics bodies?
-		TraceParameters);
-
-	AActor* ActorHit = HitResult.GetActor();
-	//UE_LOG(LogTemp, Warning, TEXT("We hit the: %s"), *ActorHit->GetName()); // TEST Ticking
-	if (ActorHit)
-	{
-	HitLocation = HitResult.Location;
-	UE_LOG(LogTemp, Warning, TEXT("We hit the %s at: %s"), *ActorHit->GetName(), *HitLocation.ToString()); // TEST Ticking
-	}
-
-	return DidWork;
+	HitLocation = FVector(1.0);		// returns (1,1,1)
+	return true;
 }
 
 ATank* ATankPlayerController::GetControlledTank() const
