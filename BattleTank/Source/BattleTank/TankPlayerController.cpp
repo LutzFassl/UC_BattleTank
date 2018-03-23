@@ -4,6 +4,7 @@
 //#include "GameFramework/Actor.h"
 #include "Engine/World.h"
 #include "DrawDebugHelpers.h"
+//#include "Math/Vector.h"
 
 
 
@@ -46,7 +47,7 @@ void ATankPlayerController::AimTowardsCrosshair()
 		//UE_LOG(LogTemp, Warning, TEXT("Vector HitLocation: %s"), *HitLocation.ToString()); // TEST Ticking
 	}
 
-	//if (GetSightRayHitLocation()) { UE_LOG(LogTemp, Warning, TEXT("I'm hitting something")); } // TEST Ticking; }
+	
 
 	
 
@@ -65,41 +66,56 @@ bool ATankPlayerController::GetSightRayHitLocation(FVector& HitLocation) const
 	
 	// Deproject = Calculate 3D Location from Crosshair
 	FVector LookDirection;
-	GetLookDirection(ScreenLocation, LookDirection);
-
-	//// Ray-Casting
-	//FCollisionQueryParams TraceParameters(FName(TEXT("")), false, GetOwner());
-
-	//FHitResult HitResult;
-	//bool DidWork = GetWorld()->LineTraceSingleByObjectType(
-	//	HitResult,
-	//	CameraWorldLocation,
-	//	CameraWorldDirection * 100000,
-	//	FCollisionObjectQueryParams(ECollisionChannel::ECC_WorldStatic),
-	//	TraceParameters);
-
-	//// See what we hit
-	//AActor* ActorHit = HitResult.GetActor();
-	//if (ActorHit)
-	//{
-	//	UE_LOG(LogTemp, Warning, TEXT("We hit the: %s"), *ActorHit->GetName()); // TEST Ticking
-	//	//UE_LOG(LogTemp, Warning, TEXT("We hit the %s at: %s"), *ActorHit->GetName(), *HitLocation.ToString()); // TEST Ticking
-	//}
-	//else
-	//{
-	//	UE_LOG(LogTemp, Warning, TEXT("We hit nothing")); // TEST Ticking
-	//}
+	FVector CameraWorldLocation;
+	if (GetLookDirection(ScreenLocation, CameraWorldLocation, LookDirection))
+	{
+		//// Ray-Casting / Line Tracing
+		GetLookVectorHitLocation(CameraWorldLocation, LookDirection);
+	}
 
 	return true;
 }
 
-bool ATankPlayerController::GetLookDirection(FVector2D ScreenLocation, FVector & LookDirection) const
+// Calculate 3D Look direction from 2D Crosshair position. Use OUT Parameter LookDirection
+bool ATankPlayerController::GetLookDirection(FVector2D ScreenLocation, FVector &CameraWorldLocation, FVector & LookDirection) const
 {
-	// Project from camera through crosshair
-	FVector CameraWorldLocation;
+	
 	if (DeprojectScreenPositionToWorld(ScreenLocation.X, ScreenLocation.Y, CameraWorldLocation, LookDirection)) { return true; }
+	
 
 	return false;
+}
+
+bool ATankPlayerController::GetLookVectorHitLocation(FVector &Location, FVector & LookDirection) const	//needs position and direction
+{
+	FCollisionQueryParams TraceParameters(FName(TEXT("")), false, GetOwner());
+	FCollisionResponseParams ResponseParam(ECollisionResponse::ECR_Overlap);
+
+	DrawDebugLine(GetWorld(), Location + LookDirection.GetSafeNormal() * 2000, LookDirection.GetSafeNormal() * 1000000, FColor(255, 0, 255), false, 0.f, 0.f, 25.f);
+
+
+	FHitResult HitResult;
+	bool DidWork = GetWorld()->LineTraceSingleByChannel(
+		HitResult,
+		Location,
+		LookDirection.GetSafeNormal() * 1000000,		// Normalized to 1 unit = 1cm; multiplied with 1'000'000 to set length to 10km
+		ECollisionChannel::ECC_Visibility,
+		TraceParameters,
+		ResponseParam);
+
+	// See what we hit
+	AActor* ActorHit = HitResult.GetActor();
+	if (ActorHit)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("We hit the: %s"), *ActorHit->GetName()); // TEST Ticking
+		//UE_LOG(LogTemp, Warning, TEXT("We hit the %s at: %s"), *ActorHit->GetName(), *HitLocation.ToString()); // TEST Ticking
+	}
+	else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("We hit nothing")); // TEST Ticking
+	}
+	
+	return DidWork;
 }
 
 ATank* ATankPlayerController::GetControlledTank() const
