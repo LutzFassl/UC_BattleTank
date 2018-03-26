@@ -16,6 +16,27 @@ void ATankAIController::BeginPlay()
 }
 
 
+void ATankAIController::Tick(float DeltaTime)
+{
+	Super::Tick(DeltaTime);
+
+	if (!GetControlledTank()) { return; } // get out if no tank possessed
+	if (!GetPlayerTank()) { return; } // get out if no player is found possessed
+
+	FVector HitLocation;
+	HitLocation = GetPlayerTank()->GetActorLocation();
+	if (HitLocation != FVector(0))
+	{
+		// TODO Move towards player
+		
+		GetControlledTank()->AimAt(HitLocation);
+
+		// TODO Fire if ready
+	 }
+	
+	return;
+}
+
 ATank* ATankAIController::GetControlledTank() const
 {
 	return Cast<ATank>(GetPawn());

@@ -35,13 +35,13 @@ void ATankPlayerController::Tick(float DeltaTime)
 
 void ATankPlayerController::AimTowardsCrosshair()
 {
-	// TODO Code
+	
 	if(!GetControlledTank())	{	return;	} // get out if no tank
 
 	FVector HitLocation; // Out Parameter
 	if (GetSightRayHitLocation(HitLocation))
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Vector HitLocation: %s"), *HitLocation.ToString()); // TEST Ticking
+		GetControlledTank()->AimAt(HitLocation);
 	}
 
 	
