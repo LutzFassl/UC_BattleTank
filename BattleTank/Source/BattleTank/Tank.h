@@ -16,6 +16,9 @@ public:
 	// Sets default values for this pawn's properties
 	ATank();
 	void AimAt(FVector);
+
+	UFUNCTION(BlueprintCallable, Category = Setup)	// can be called from BP
+	void SetBarrelReference(UStaticMeshComponent * BarrelToSet);
 	
 
 protected:
