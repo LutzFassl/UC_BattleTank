@@ -16,7 +16,7 @@ public:
 	// Sets default values for this component's properties
 	UTankAimingComponent();
 
-	void AimAt(FVector);
+	void AimAt(FVector, float);
 	void SetBarrelReference(UStaticMeshComponent * BarrelToSet) ;
 
 protected:

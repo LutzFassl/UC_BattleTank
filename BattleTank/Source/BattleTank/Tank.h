@@ -19,6 +19,9 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = Setup)	// can be called from BP
 	void SetBarrelReference(UStaticMeshComponent * BarrelToSet);
+
+	UPROPERTY(EditAnywhere, Category = Firing)
+	float LaunchSpeed = 100000.f;	// 1000 m/s;; TODO find sensible default
 	
 
 protected:
