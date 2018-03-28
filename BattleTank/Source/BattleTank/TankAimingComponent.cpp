@@ -31,28 +31,26 @@ void UTankAimingComponent::AimAt(FVector HitLocation, float LaunchSpeed)
 	FCollisionResponseParams ResponseParam;
 
 	
-	bool SuggestProjectileVelocity;
-	SuggestProjectileVelocity = UGameplayStatics::SuggestProjectileVelocity(
+	bool bHaveAimSolution;
+	bHaveAimSolution = UGameplayStatics::SuggestProjectileVelocity(
 		this,
 		OutLaunchVelocity,
 		StartLocation,
 		EndLocation,
 		LaunchSpeed,
-		false,
-		0,
-		0,
-		ESuggestProjVelocityTraceOption::DoNotTrace,
-		ResponseParam,
-		ActorsToIgnore,
-		false		// true for debuglines
+		ESuggestProjVelocityTraceOption::DoNotTrace
 	);
 	
-	if (SuggestProjectileVelocity)
+	if (bHaveAimSolution)
 	{
 		auto AimDirection = OutLaunchVelocity.GetSafeNormal();
-		UE_LOG(LogTemp, Warning, TEXT(" %s firing at %s"), *GetOwner()->GetName(), *AimDirection.ToString()); 
+		//UE_LOG(LogTemp, Warning, TEXT(" %s firing at %s"), *GetOwner()->GetName(), *AimDirection.ToString()); 
+		MoveBarrelTowards(AimDirection);
+
+
 	}
 	
+
 
 	//auto BarrelLocation = Barrel->GetComponentLocation();
 	//UE_LOG(LogTemp, Warning, TEXT(" %s aiming from %s at %s"), *GetOwner()->GetName(), *BarrelLocation.ToString(),*HitLocation.ToString());
@@ -60,26 +58,22 @@ void UTankAimingComponent::AimAt(FVector HitLocation, float LaunchSpeed)
 	
 }
 
+void UTankAimingComponent::MoveBarrelTowards(FVector AimDirection)
+{
+	auto BarrelRotator = Barrel->GetForwardVector().Rotation();
+	auto AimAsRotator = AimDirection.Rotation();
+	auto DeltaRotator = AimAsRotator - BarrelRotator;
+
+	UE_LOG(LogTemp, Warning, TEXT("AimAsRotator: %s"), *AimAsRotator.ToString());
+
+	// Work out difference between barrel direction and aim direction
+	// Transform Difference into Roll,Pitch,Yaw for the Turret
+	// Check if it has a solution
+	// Move barrel right amount this frame, max elev speed and frame time
+}
+
 void UTankAimingComponent::SetBarrelReference(UStaticMeshComponent * BarrelToSet)
 {
 	Barrel = BarrelToSet;
-}
-
-// Called when the game starts
-void UTankAimingComponent::BeginPlay()
-{
-	Super::BeginPlay();
-
-	// ...
-	
-}
-
-
-// Called every frame
-void UTankAimingComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
-{
-	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
-
-	// ...
 }
 
