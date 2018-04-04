@@ -1,6 +1,8 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "TankAIController.h"
+#include "Tank.h"
+
 //#include "Engine/World.h"		kann man einkommentieren wenn es stört, dass VB GetWorld nicht kennt
 
 void ATankAIController::BeginPlay()

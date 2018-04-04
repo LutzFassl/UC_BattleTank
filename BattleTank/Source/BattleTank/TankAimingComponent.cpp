@@ -4,6 +4,7 @@
 #include "Components/SceneComponent.h"
 //#include "Components/SceneComponent.h"
 #include "Kismet/GameplayStatics.h"
+#include "TankBarrel.h"
 
 
 
@@ -38,6 +39,9 @@ void UTankAimingComponent::AimAt(FVector HitLocation, float LaunchSpeed)
 			StartLocation,
 			EndLocation,
 			LaunchSpeed,
+			false,
+			0,
+			0,
 			ESuggestProjVelocityTraceOption::DoNotTrace
   // true for debuglines
 		);

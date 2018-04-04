@@ -3,11 +3,10 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Components/ActorComponent.h"
-#include "TankBarrel.h"
+//#include "Components/ActorComponent.h"
 #include "TankAimingComponent.generated.h"
+class UTankBarrel;
 
-//class UTankBarrel;	// forward declaration
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class BATTLETANK_API UTankAimingComponent : public UActorComponent
