@@ -33,6 +33,7 @@ void UTankAimingComponent::AimAt(FVector HitLocation, float LaunchSpeed)
 
 
 	bool bHaveAimSolution;
+
 	bHaveAimSolution = UGameplayStatics::SuggestProjectileVelocity(
 			this,
 			OutLaunchVelocity,
@@ -53,13 +54,13 @@ void UTankAimingComponent::AimAt(FVector HitLocation, float LaunchSpeed)
 		//UE_LOG(LogTemp, Warning, TEXT(" %s firing at %s"), *GetOwner()->GetName(), *AimDirection.ToString()); 
 		MoveBarrelTowards(AimDirection);
 
-		UE_LOG(LogTemp, Warning, TEXT("%f: Aim solve found."), Time);	//--> Time Prefix for Logging
+		//UE_LOG(LogTemp, Warning, TEXT("%f: Aim solve found."), Time);	//--> Time Prefix for Logging
 
 	}
 	else
 	{
 		// no Aiming solution found
-		UE_LOG(LogTemp, Warning, TEXT("%f: No aim solve found."), Time);	//--> Time Prefix for Logging
+		//UE_LOG(LogTemp, Warning, TEXT("%f: No aim solve found."), Time);	//--> Time Prefix for Logging
 	}
 	
 
@@ -83,7 +84,7 @@ void UTankAimingComponent::MoveBarrelTowards(FVector AimDirection)
 	// Check if it has a solution
 	// Move barrel right amount this frame, max elev speed and frame time
 	
-	Barrel->Elevate(5);		// TODO remove magic number
+	Barrel->Elevate(DeltaRotator.Pitch);		// TODO remove magic number
 }
 
 void UTankAimingComponent::SetBarrelReference(UTankBarrel * BarrelToSet)
