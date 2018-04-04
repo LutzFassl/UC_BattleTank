@@ -4,6 +4,7 @@
 #include "Components/SceneComponent.h"
 //#include "Components/SceneComponent.h"
 #include "Kismet/GameplayStatics.h"
+#include "TankBarrel.h"
 
 
 // Sets default values for this component's properties
@@ -30,16 +31,19 @@ void UTankAimingComponent::AimAt(FVector HitLocation, float LaunchSpeed)
 	TArray < AActor * > ActorsToIgnore;
 	FCollisionResponseParams ResponseParam;
 
-	
+
+
 	bool bHaveAimSolution;
 	bHaveAimSolution = UGameplayStatics::SuggestProjectileVelocity(
-		this,
-		OutLaunchVelocity,
-		StartLocation,
-		EndLocation,
-		LaunchSpeed,
-		ESuggestProjVelocityTraceOption::DoNotTrace
-	);
+			this,
+			OutLaunchVelocity,
+			StartLocation,
+			EndLocation,
+			LaunchSpeed,
+			ESuggestProjVelocityTraceOption::DoNotTrace
+  // true for debuglines
+		);
+
 	
 	if (bHaveAimSolution)
 	{
@@ -64,15 +68,17 @@ void UTankAimingComponent::MoveBarrelTowards(FVector AimDirection)
 	auto AimAsRotator = AimDirection.Rotation();
 	auto DeltaRotator = AimAsRotator - BarrelRotator;
 
-	UE_LOG(LogTemp, Warning, TEXT("AimAsRotator: %s"), *AimAsRotator.ToString());
+	//UE_LOG(LogTemp, Warning, TEXT("AimAsRotator: %s"), *AimAsRotator.ToString());
 
 	// Work out difference between barrel direction and aim direction
 	// Transform Difference into Roll,Pitch,Yaw for the Turret
 	// Check if it has a solution
 	// Move barrel right amount this frame, max elev speed and frame time
+	
+	Barrel->Elevate(5);		// TODO remove magic number
 }
 
-void UTankAimingComponent::SetBarrelReference(UStaticMeshComponent * BarrelToSet)
+void UTankAimingComponent::SetBarrelReference(UTankBarrel * BarrelToSet)
 {
 	Barrel = BarrelToSet;
 }
