@@ -18,8 +18,6 @@ public:
 	// -1 is max downward, +1 is max upward
 	void Elevate (float RelativeSpeed);
 
-
-
 private:
 	
 	UPROPERTY(EditAnywhere, Category = BarrelBoundaries)
