@@ -32,10 +32,7 @@ void UTankAimingComponent::AimAt(FVector HitLocation, float LaunchSpeed)
 	TArray < AActor * > ActorsToIgnore;
 	FCollisionResponseParams ResponseParam;
 
-
-
 	bool bHaveAimSolution;
-
 	bHaveAimSolution = UGameplayStatics::SuggestProjectileVelocity(
 			this,
 			OutLaunchVelocity,
@@ -53,25 +50,13 @@ void UTankAimingComponent::AimAt(FVector HitLocation, float LaunchSpeed)
 	if (bHaveAimSolution)
 	{
 		auto AimDirection = OutLaunchVelocity.GetSafeNormal();
-		//UE_LOG(LogTemp, Warning, TEXT(" %s firing at %s"), *GetOwner()->GetName(), *AimDirection.ToString()); 
 		MoveBarrelTowards(AimDirection);
 		MoveTurretTowards(AimDirection);
-
-		UE_LOG(LogTemp, Warning, TEXT("%f: Aim solve found."), Time);	//--> Time Prefix for Logging
-
 	}
 	else
 	{
 		// no Aiming solution found
-		UE_LOG(LogTemp, Warning, TEXT("%f: No aim solve found."), Time);	//--> Time Prefix for Logging
-	}
-	
-
-
-	//auto BarrelLocation = Barrel->GetComponentLocation();
-	//UE_LOG(LogTemp, Warning, TEXT(" %s aiming from %s at %s"), *GetOwner()->GetName(), *BarrelLocation.ToString(),*HitLocation.ToString());
-	//UE_LOG(LogTemp, Warning, TEXT(" %s firing at %f"), *GetOwner()->GetName(),LaunchSpeed);
-	
+	}	
 }
 
 void UTankAimingComponent::MoveBarrelTowards(FVector AimDirection)
