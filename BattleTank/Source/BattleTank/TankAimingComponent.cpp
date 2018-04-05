@@ -54,6 +54,7 @@ void UTankAimingComponent::AimAt(FVector HitLocation, float LaunchSpeed)
 		auto AimDirection = OutLaunchVelocity.GetSafeNormal();
 		//UE_LOG(LogTemp, Warning, TEXT(" %s firing at %s"), *GetOwner()->GetName(), *AimDirection.ToString()); 
 		MoveBarrelTowards(AimDirection);
+		MoveTurretTowards(AimDirection);
 
 		//UE_LOG(LogTemp, Warning, TEXT("%f: Aim solve found."), Time);	//--> Time Prefix for Logging
 
@@ -86,6 +87,15 @@ void UTankAimingComponent::MoveBarrelTowards(FVector AimDirection)
 	// Move barrel right amount this frame, max elev speed and frame time
 	
 	Barrel->Elevate(DeltaRotator.Pitch);		// TODO remove magic number
+}
+
+void UTankAimingComponent::MoveTurretTowards(FVector AimDirection)
+{
+	auto TurretRotator = Turret->GetForwardVector().Rotation();
+	auto AimAsRotator = AimDirection.Rotation();
+	auto DeltaRotator = AimAsRotator - TurretRotator;
+
+	Turret->Rotate(DeltaRotator.Yaw);		// TODO remove magic number
 }
 
 void UTankAimingComponent::SetBarrelReference(UTankBarrel * BarrelToSet)
