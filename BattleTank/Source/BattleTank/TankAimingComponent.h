@@ -22,9 +22,6 @@ public:
 	void SetBarrelReference(UTankBarrel * BarrelToSet) ;
 	void SetTurretReference(UTankTurret * TurretToSet);
 
-	// TODO add setTurretReference
-	
-
 protected:
 
 
