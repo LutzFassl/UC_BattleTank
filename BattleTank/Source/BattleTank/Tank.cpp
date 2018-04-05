@@ -7,6 +7,7 @@
 #include "Projectile.h"
 
 
+
 // Sets default values
 ATank::ATank()
 {
@@ -15,6 +16,7 @@ ATank::ATank()
 
 	// No need to protect pointers because it's added at construction
 	TankAimingComponent = CreateDefaultSubobject<UTankAimingComponent>(FName("Aiming Component"));
+	
 
 }
 
@@ -38,16 +40,15 @@ void ATank::SetTurretReference(UTankTurret * TurretToSet)
 void ATank::Fire()
 {
 	if (!Barrel) { return; }
-	
-	//auto Time = GetWorld()->GetTimeSeconds();
-	//UE_LOG(LogTemp, Warning, TEXT("%f: I fired."), Time);
 
 	// spawn projectile at socket location
 	FVector StartLocation = Barrel->GetSocketLocation(FName("Projectile"));
 	FRotator StartRotation = Barrel->GetSocketRotation(FName("Projectile"));
 	//UE_LOG(LogTemp, Warning, TEXT("Projectile Rot: %s"), *StartRotation.ToString());
 
-	GetWorld()->SpawnActor<AProjectile>(ProjectileBlueprint,StartLocation, StartRotation);
+	// spawn and fire projectile
+	auto Projectile = GetWorld()->SpawnActor<AProjectile>(ProjectileBlueprint,StartLocation, StartRotation);
+	Projectile->LaunchProjectile(LaunchSpeed);
 }
 
 // Called when the game starts or when spawned

@@ -11,6 +11,7 @@ class UTankTurret;
 class UTankAimingComponent; 
 class AProjectile;
 
+
 UCLASS()
 class BATTLETANK_API ATank : public APawn
 {
@@ -41,6 +42,7 @@ public:
 
 protected:
 	UTankAimingComponent * TankAimingComponent = nullptr;
+	
 
 private:
 	// Called when the game starts or when spawned
