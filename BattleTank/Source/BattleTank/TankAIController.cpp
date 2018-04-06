@@ -8,13 +8,6 @@
 void ATankAIController::BeginPlay()
 {
 	Super::BeginPlay();
-	if (GetControlledTank() && GetPlayerTank())
-	{
-		FString MyBot = GetControlledTank()->GetName();
-		FString MyTarget = GetPlayerTank()->GetName();
-
-		UE_LOG(LogTemp, Warning, TEXT("I'm a bot. My name is %s and I will hunt the player %s"), *MyBot, *MyTarget);
-	}
 }
 
 
@@ -22,34 +15,18 @@ void ATankAIController::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	if (!GetControlledTank()) { return; } // get out if no tank possessed
-	if (!GetPlayerTank()) { return; } // get out if no player is found possessed
+	auto PlayerTank = Cast<ATank>(GetWorld()->GetFirstPlayerController()->GetPawn());
+	auto ControlledTank = Cast<ATank>(GetPawn());
 
-	FVector HitLocation;
-	HitLocation = GetPlayerTank()->GetActorLocation();
-	if (HitLocation != FVector(0))
+	//if (PlayerTank) { return; } // get out if no tank possessed
+	//if (!Cast<ATank>(GetWorld()->GetFirstPlayerController()->GetPawn())) { return; } // get out if no player is found possessed
+	if (PlayerTank)
 	{	
-		GetControlledTank()->AimAt(HitLocation);
-
-		// TODO Fire if ready
+		FVector HitLocation = PlayerTank->GetActorLocation();
+		ControlledTank->AimAt(HitLocation);
+		ControlledTank->Fire(); // TODO dont fire every frame
 	 }
 	
 	return;
 }
 
-ATank* ATankAIController::GetControlledTank() const
-{
-	return Cast<ATank>(GetPawn());
-}
-
-ATank * ATankAIController::GetPlayerTank() const
-{
-	if (Cast<ATank>(GetWorld()->GetFirstPlayerController()->GetPawn()))
-	{
-		return Cast<ATank>(GetWorld()->GetFirstPlayerController()->GetPawn());
-	}
-	else
-	{
-		return nullptr;
-	}
-}

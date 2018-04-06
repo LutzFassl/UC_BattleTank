@@ -39,16 +39,20 @@ void ATank::SetTurretReference(UTankTurret * TurretToSet)
 
 void ATank::Fire()
 {
-	if (!Barrel) { return; }
+	bool isReloaded = FPlatformTime::Seconds() - LastFireTime > ReloadTimeInSeconds;
+	
+	if (Barrel && isReloaded)
+	{
+		// spawn projectile at socket location
+		FVector StartLocation = Barrel->GetSocketLocation(FName("Projectile"));
+		FRotator StartRotation = Barrel->GetSocketRotation(FName("Projectile"));
+		//UE_LOG(LogTemp, Warning, TEXT("Projectile Rot: %s"), *StartRotation.ToString());
 
-	// spawn projectile at socket location
-	FVector StartLocation = Barrel->GetSocketLocation(FName("Projectile"));
-	FRotator StartRotation = Barrel->GetSocketRotation(FName("Projectile"));
-	//UE_LOG(LogTemp, Warning, TEXT("Projectile Rot: %s"), *StartRotation.ToString());
-
-	// spawn and fire projectile
-	auto Projectile = GetWorld()->SpawnActor<AProjectile>(ProjectileBlueprint,StartLocation, StartRotation);
-	Projectile->LaunchProjectile(LaunchSpeed);
+		// spawn and fire projectile
+		auto Projectile = GetWorld()->SpawnActor<AProjectile>(ProjectileBlueprint, StartLocation, StartRotation);
+		Projectile->LaunchProjectile(LaunchSpeed);
+		LastFireTime = FPlatformTime::Seconds();	// Set Time of last fire event
+	}
 }
 
 // Called when the game starts or when spawned

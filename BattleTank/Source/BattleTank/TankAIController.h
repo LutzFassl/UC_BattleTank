@@ -27,8 +27,4 @@ private:
 	virtual void BeginPlay();
 	virtual void Tick(float) override;
 
-	ATank * GetControlledTank() const;
-	ATank * GetPlayerTank() const;
-	
-	
 };
