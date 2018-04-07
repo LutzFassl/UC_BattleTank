@@ -20,13 +20,13 @@ public:
 
 private:
 	
-	UPROPERTY(EditAnywhere, Category = BarrelBoundaries)
+	UPROPERTY(EditDefaultsOnly, Category = BarrelBoundaries)
 	float MaxDegreesPerSecond = 20.f;
 	
-	UPROPERTY(EditAnywhere, Category = BarrelBoundaries)
+	UPROPERTY(EditDefaultsOnly, Category = BarrelBoundaries)
 	float MaxDegreesElevation = 20.f;
 
-	UPROPERTY(EditAnywhere, Category = BarrelBoundaries)
+	UPROPERTY(EditDefaultsOnly, Category = BarrelBoundaries)
 	float MinDegreesElevation = 0.f;
 	
 	

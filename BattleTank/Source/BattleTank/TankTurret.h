@@ -20,7 +20,7 @@ public:
 
 private:
 
-	UPROPERTY(EditAnywhere, Category = TurretControls)
+	UPROPERTY(EditDefaultsOnly, Category = TurretControls)
 		float MaxDegreesPerSecond = 35.f;
 
 
