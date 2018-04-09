@@ -9,6 +9,7 @@
 class UTankBarrel;
 class UTankTurret;
 class UTankAimingComponent; 
+class UTankMovementComponent;
 class AProjectile;
 
 
@@ -41,12 +42,16 @@ public:
 	UPROPERTY(EditDefaultsOnly, Category = Firing)
 	float ReloadTimeInSeconds = 3;	// seconds
 
-
 	
-	
+		
 
 protected:
 	UTankAimingComponent * TankAimingComponent = nullptr;
+
+	UPROPERTY(BlueprintReadOnly)
+	UTankMovementComponent * TankMovementComponent = nullptr;
+	
+	
 	
 
 private:
