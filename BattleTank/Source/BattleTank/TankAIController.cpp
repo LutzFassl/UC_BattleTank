@@ -24,7 +24,7 @@ void ATankAIController::Tick(float DeltaTime)
 	{	
 		FVector HitLocation = PlayerTank->GetActorLocation();
 		ControlledTank->AimAt(HitLocation);
-		ControlledTank->Fire(); // TODO dont fire every frame
+		ControlledTank->Fire();
 	 }
 	
 	return;

@@ -57,7 +57,9 @@ void UTankAimingComponent::AimAt(FVector HitLocation, float LaunchSpeed)
 	{
 		// no Aiming solution found
 		 auto Time = GetWorld()->GetTimeSeconds();
-		UE_LOG(LogTemp, Warning, TEXT("%f: No aiming solution found"), Time);
+		 auto OwningTank = GetOwner()->GetName();
+		UE_LOG(LogTemp, Warning, TEXT("%f: No aiming solution found by %s"), Time, *OwningTank);
+		
 	}	
 }
 
