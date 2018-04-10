@@ -49,11 +49,12 @@ void UTankAimingComponent::AimAt(FVector HitLocation, float LaunchSpeed)
 	auto Time = GetWorld()->GetTimeSeconds();
 	if (bHaveAimSolution)
 	{
-		if (bLastSolution == false) {
-			bLastSolution = true;
-			auto OwningTank = GetOwner()->GetName();
-			UE_LOG(LogTemp, Warning, TEXT("%f: Aiming solution found by %s"), Time, *OwningTank);
-		}
+		//Log reporting function
+		//if (bLastSolution == false) {
+		//	bLastSolution = true;
+		//	auto OwningTank = GetOwner()->GetName();
+		//	UE_LOG(LogTemp, Warning, TEXT("%f: Aiming solution found by %s"), Time, *OwningTank);
+		//}
 
 		auto AimDirection = OutLaunchVelocity.GetSafeNormal();
 		MoveBarrelTowards(AimDirection);
@@ -64,12 +65,14 @@ void UTankAimingComponent::AimAt(FVector HitLocation, float LaunchSpeed)
 		// no Aiming solution found
 
 		// complain that no solution was found to log but only once
-		if (bLastSolution == true) 
-		{
-		bLastSolution = false;
-		auto OwningTank = GetOwner()->GetName();
-		UE_LOG(LogTemp, Warning, TEXT("%f: Aiming solution lost by %s"), Time, *OwningTank);
-		}
+
+		//Log reporting function
+		//if (bLastSolution == true) 
+		//{
+		//bLastSolution = false;
+		//auto OwningTank = GetOwner()->GetName();
+		//UE_LOG(LogTemp, Warning, TEXT("%f: Aiming solution lost by %s"), Time, *OwningTank);
+		//}
 		
 	}	
 }

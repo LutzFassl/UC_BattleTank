@@ -30,8 +30,19 @@ void UTankMovementComponent::RequestDirectMove(const FVector & MoveVelocity, boo
 {
 	// No need for SUPER:: because we replace the function
 
-	Velocity = MoveVelocity;
 	auto Name = GetOwner()->GetName();
-	UE_LOG(LogTemp, Warning, TEXT("Tank %s calcs MoveVelocity: %s"), *Name, *Velocity.ToString());
+	auto AIForwardIntention = MoveVelocity.GetSafeNormal();
+	auto TankForward = GetOwner()->GetActorForwardVector().GetSafeNormal();
+	
+	//My approach
+	FRotator DeltaRotator = AIForwardIntention.Rotation() - TankForward.Rotation();
+	float DeltaYawAngle = DeltaRotator.Yaw;
+	float CalculatedThrow = cos(DeltaYawAngle);
+	//UE_LOG(LogTemp, Warning, TEXT("Tank %s reports DeltaAngle: %f, Throw: %f"), *Name, DeltaYawAngle, CalculatedThrow);
+	//IntendMoveForward(CalculatedThrow);
+
+	//Bens approach
+	float ForwardThrow = FVector::DotProduct(AIForwardIntention, TankForward);
+	IntendMoveForward(ForwardThrow);
 }
 
