@@ -34,8 +34,8 @@ void UTankMovementComponent::RequestDirectMove(const FVector & MoveVelocity, boo
 	auto AIForwardIntention = MoveVelocity.GetSafeNormal();
 	auto TankForward = GetOwner()->GetActorForwardVector().GetSafeNormal();
 
-	float ForwardThrow = FVector::DotProduct(AIForwardIntention, TankForward);
-	float RightThrow = FVector::CrossProduct(AIForwardIntention, TankForward).Size();
+	float ForwardThrow = FVector::DotProduct(TankForward, AIForwardIntention);
+	float RightThrow = FVector::CrossProduct(TankForward,AIForwardIntention).Z;
 	
 	IntendMoveForward(ForwardThrow);
 	IntendTurnRight(RightThrow);
