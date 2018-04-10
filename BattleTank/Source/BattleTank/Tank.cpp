@@ -58,6 +58,7 @@ void ATank::Fire()
 void ATank::BeginPlay()
 {
 	Super::BeginPlay();
+	LastFireTime = FPlatformTime::Seconds();
 	
 }
 
