@@ -32,6 +32,9 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void Fire();
 
+	UFUNCTION(BlueprintCallable)
+	bool GetReloadReady();
+
 	UPROPERTY(EditDefaultsOnly, Category = Setup)
 	TSubclassOf<AProjectile> ProjectileBlueprint;
 	//UClass* ProjectileBlueprint;
@@ -42,9 +45,6 @@ public:
 	UPROPERTY(EditDefaultsOnly, Category = Firing)
 	float ReloadTimeInSeconds = 3;	// seconds
 
-	
-		
-
 protected:
 	UTankAimingComponent * TankAimingComponent = nullptr;
 
@@ -54,6 +54,7 @@ protected:
 private:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+	//void Tick(float DeltaTime);
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;

@@ -19,6 +19,13 @@ ATank::ATank()
 	
 }
 
+//// Called every frame
+//void ATank::Tick(float DeltaTime)
+//{
+//	Super::Tick(DeltaTime);
+//}
+
+
 void ATank::AimAt(FVector HitLocation)
 {
 	//TankAimingComponent()->AimAt(HitLocation);
@@ -51,6 +58,16 @@ void ATank::Fire()
 		auto Projectile = GetWorld()->SpawnActor<AProjectile>(ProjectileBlueprint, StartLocation, StartRotation);
 		Projectile->LaunchProjectile(LaunchSpeed);
 		LastFireTime = FPlatformTime::Seconds();	// Set Time of last fire event
+	}
+}
+
+bool ATank::GetReloadReady()
+{
+	if (FPlatformTime::Seconds() - LastFireTime > ReloadTimeInSeconds) 
+	{ return true; }
+	else
+	{
+		return false;
 	}
 }
 
