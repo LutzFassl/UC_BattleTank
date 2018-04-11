@@ -16,7 +16,6 @@ void UTankMovementComponent::IntendMoveForward(float Throw)
 	if (!LeftTrack || !RightTrack) { return; }	// pointer protection
 	LeftTrack->SetThrottle(Throw);
 	RightTrack->SetThrottle(Throw);
-	// TODO prevent double speed from double control use
 }
 
 void UTankMovementComponent::IntendTurnRight(float Throw)
@@ -30,7 +29,6 @@ void UTankMovementComponent::RequestDirectMove(const FVector & MoveVelocity, boo
 {
 	// No need for SUPER:: because we replace the function
 
-	//auto Name = GetOwner()->GetName();
 	auto AIForwardIntention = MoveVelocity.GetSafeNormal();
 	auto TankForward = GetOwner()->GetActorForwardVector().GetSafeNormal();
 
@@ -39,8 +37,5 @@ void UTankMovementComponent::RequestDirectMove(const FVector & MoveVelocity, boo
 	
 	IntendMoveForward(ForwardThrow);
 	IntendTurnRight(RightThrow);
-
-	//auto Time = GetWorld()->GetTimeSeconds();
-	//UE_LOG(LogTemp, Warning, TEXT("I'm still driving: %f"), Time);
 }
 
