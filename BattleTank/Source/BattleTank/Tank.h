@@ -33,7 +33,7 @@ public:
 	void Fire();
 
 	UFUNCTION(BlueprintCallable)
-	bool GetReloadReady();
+	FString GetRemainingReload();
 
 	UPROPERTY(EditDefaultsOnly, Category = Setup)
 	TSubclassOf<AProjectile> ProjectileBlueprint;

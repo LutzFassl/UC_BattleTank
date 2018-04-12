@@ -61,14 +61,21 @@ void ATank::Fire()
 	}
 }
 
-bool ATank::GetReloadReady()
+FString ATank::GetRemainingReload()
 {
-	if (FPlatformTime::Seconds() - LastFireTime > ReloadTimeInSeconds) 
-	{ return true; }
+	float rawReloadLeft = ReloadTimeInSeconds - (FPlatformTime::Seconds() - LastFireTime);
+	
+	if (rawReloadLeft <= 0)
+	{
+		return "Reloaded";
+	}
 	else
 	{
-		return false;
+		float RoundedValue = FMath::RoundHalfFromZero(rawReloadLeft * 100) / 100;
+		return FString::SanitizeFloat(RoundedValue);
 	}
+	
+	
 }
 
 // Called when the game starts or when spawned
