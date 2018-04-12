@@ -8,6 +8,14 @@
 class UTankBarrel;
 class UTankTurret;
 
+UENUM()		//"BlueprintType" is essential to include
+enum class EFiringState : uint8
+{
+	Reloading,
+	Aiming,
+	Locked
+};
+
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class BATTLETANK_API UTankAimingComponent : public UActorComponent
@@ -24,6 +32,9 @@ public:
 
 protected:
 
+	UPROPERTY(BlueprintReadOnly, Category = State)
+	EFiringState FiringState = EFiringState::Reloading;
+
 
 private:
 	UTankBarrel * Barrel = nullptr;
@@ -31,6 +42,8 @@ private:
 	void MoveBarrelTowards(FVector);
 	void MoveTurretTowards(FVector);
 	bool bLastSolution = false;
+	
+
 
 
 
