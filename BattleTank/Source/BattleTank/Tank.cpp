@@ -19,12 +19,6 @@ ATank::ATank()
 	
 }
 
-//// Called every frame
-//void ATank::Tick(float DeltaTime)
-//{
-//	Super::Tick(DeltaTime);
-//}
-
 void ATank::SetAimingComponent(UTankAimingComponent * AimingComponentToSet)
 {
 	TankAimingComponent = AimingComponentToSet;
@@ -34,19 +28,6 @@ void ATank::AimAt(FVector HitLocation)
 {
 	TankAimingComponent->AimAt(HitLocation, LaunchSpeed);
 }
-
-
-
-//void ATank::SetBarrelReference(UTankBarrel * BarrelToSet)
-//{
-//	TankAimingComponent->SetBarrelReference(BarrelToSet);
-//	Barrel = BarrelToSet;
-//}
-//
-//void ATank::SetTurretReference(UTankTurret * TurretToSet)
-//{
-//	TankAimingComponent->SetTurretReference(TurretToSet);
-//}
 
 void ATank::Fire()
 {
@@ -69,7 +50,6 @@ void ATank::Fire()
 FString ATank::GetRemainingReload()
 {
 	float rawReloadLeft = ReloadTimeInSeconds - (FPlatformTime::Seconds() - LastFireTime);
-	
 	if (rawReloadLeft <= 0)
 	{
 		return "Reloaded";
@@ -79,8 +59,6 @@ FString ATank::GetRemainingReload()
 		float RoundedValue = FMath::RoundHalfFromZero(rawReloadLeft * 100) / 100;
 		return FString::SanitizeFloat(RoundedValue);
 	}
-	
-	
 }
 
 // Called when the game starts or when spawned
@@ -89,12 +67,5 @@ void ATank::BeginPlay()
 	Super::BeginPlay();
 	LastFireTime = FPlatformTime::Seconds();
 	
-}
-
-// Called to bind functionality to input
-void ATank::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
-{
-	Super::SetupPlayerInputComponent(PlayerInputComponent);
-
 }
 

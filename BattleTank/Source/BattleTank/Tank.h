@@ -26,12 +26,6 @@ public:
 	UFUNCTION(BlueprintCallable, Category = Setup)	// can be called from BP
 	void SetAimingComponent(UTankAimingComponent * AimingComponentToSet);
 
-	//UFUNCTION(BlueprintCallable, Category = Setup)	// can be called from BP
-	//void SetBarrelReference(UTankBarrel * BarrelToSet);
-
-	//UFUNCTION(BlueprintCallable, Category = Setup)	// can be called from BP
-	//void SetTurretReference(UTankTurret * TurretToSet);
-
 	UFUNCTION(BlueprintCallable)
 	void Fire();
 
@@ -59,10 +53,6 @@ private:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 	//void Tick(float DeltaTime);
-
-	// Called to bind functionality to input
-	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
-
 	
 	UTankBarrel* Barrel = nullptr;
 	double LastFireTime = 0;
