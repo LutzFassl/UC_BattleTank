@@ -49,12 +49,14 @@ protected:
 	UPROPERTY(BlueprintReadOnly)
 	UTankMovementComponent * TankMovementComponent = nullptr;
 
+	UPROPERTY(BlueprintReadWrite)
+	UTankBarrel* Barrel = nullptr;
+
 private:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 	//void Tick(float DeltaTime);
 	
-	UTankBarrel* Barrel = nullptr;
 	double LastFireTime = 0;
 
 	
