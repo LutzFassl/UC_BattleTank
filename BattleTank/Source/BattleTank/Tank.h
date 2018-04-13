@@ -24,10 +24,13 @@ public:
 	void AimAt(FVector);
 
 	UFUNCTION(BlueprintCallable, Category = Setup)	// can be called from BP
-	void SetBarrelReference(UTankBarrel * BarrelToSet);
+	void SetAimingComponent(UTankAimingComponent * AimingComponentToSet);
 
-	UFUNCTION(BlueprintCallable, Category = Setup)	// can be called from BP
-	void SetTurretReference(UTankTurret * TurretToSet);
+	//UFUNCTION(BlueprintCallable, Category = Setup)	// can be called from BP
+	//void SetBarrelReference(UTankBarrel * BarrelToSet);
+
+	//UFUNCTION(BlueprintCallable, Category = Setup)	// can be called from BP
+	//void SetTurretReference(UTankTurret * TurretToSet);
 
 	UFUNCTION(BlueprintCallable)
 	void Fire();

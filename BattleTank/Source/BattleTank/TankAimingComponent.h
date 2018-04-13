@@ -27,10 +27,16 @@ public:
 	UTankAimingComponent();
 
 	void AimAt(FVector, float);
-	void SetBarrelReference(UTankBarrel * BarrelToSet) ;
-	void SetTurretReference(UTankTurret * TurretToSet);
+
+	UFUNCTION(BlueprintCallable, Category = Setup)
+		void SetBarrelReference(UTankBarrel * BarrelToSet);
+
+	UFUNCTION(BlueprintCallable, Category = Setup)
+		void SetTurretReference(UTankTurret * TurretToSet);
 
 protected:
+
+
 
 	UPROPERTY(BlueprintReadOnly, Category = State)
 	EFiringState FiringState = EFiringState::Reloading;
