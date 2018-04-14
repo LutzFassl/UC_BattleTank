@@ -19,6 +19,7 @@ ATankPlayerController::ATankPlayerController()
 
 void ATankPlayerController::BeginPlay()
 {
+	UE_LOG(LogTemp, Warning, TEXT("DONKEY::TankPlayerController.cpp"));
 	Super::BeginPlay();
 
 	if (GetControlledTank())

@@ -22,6 +22,16 @@ void ATank::SetAimingComponent(UTankAimingComponent * AimingComponentToSet)
 	TankAimingComponent = AimingComponentToSet;
 }
 
+UTankAimingComponent * ATank::GetAimingComponent()
+{
+	if (TankAimingComponent)
+	{ return TankAimingComponent; }
+	else
+	{
+		return nullptr;
+	}
+}
+
 void ATank::AimAt(FVector HitLocation)
 {
 	if (!TankAimingComponent) { return; }
@@ -63,6 +73,7 @@ FString ATank::GetRemainingReload()
 // Called when the game starts or when spawned
 void ATank::BeginPlay()
 {
+	UE_LOG(LogTemp, Warning, TEXT("DONKEY::Tank.cpp"));
 	Super::BeginPlay();
 	LastFireTime = FPlatformTime::Seconds();
 	

@@ -17,6 +17,7 @@ AProjectile::AProjectile()
 // Called when the game starts or when spawned
 void AProjectile::BeginPlay()
 {
+	UE_LOG(LogTemp, Warning, TEXT("DONKEY::Projectile.cpp"));
 	Super::BeginPlay();
 	
 }

@@ -7,6 +7,7 @@
 
 void ATankAIController::BeginPlay()
 {
+	UE_LOG(LogTemp, Warning, TEXT("DONKEY::TankAIController.cpp"));
 	Super::BeginPlay();
 }
 

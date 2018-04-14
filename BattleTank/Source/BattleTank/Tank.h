@@ -26,6 +26,9 @@ public:
 	UFUNCTION(BlueprintCallable, Category = Setup)	// can be called from BP
 	void SetAimingComponent(UTankAimingComponent * AimingComponentToSet);
 
+	UFUNCTION(BlueprintCallable, Category = Setup)	// can be called from BP
+	UTankAimingComponent* GetAimingComponent();
+
 	UFUNCTION(BlueprintCallable)
 	void Fire();
 
@@ -37,7 +40,7 @@ public:
 	//UClass* ProjectileBlueprint;
 
 	UPROPERTY(EditDefaultsOnly, Category = Firing)
-	float LaunchSpeed = 4000.f;	// 100000 = 1000 m/s;
+	float LaunchSpeed = 15000.f;	// 100000 = 1000 m/s;
 
 	UPROPERTY(EditDefaultsOnly, Category = Firing)
 	float ReloadTimeInSeconds = 3;	// seconds
