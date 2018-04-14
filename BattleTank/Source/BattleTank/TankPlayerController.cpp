@@ -14,12 +14,13 @@
 
 ATankPlayerController::ATankPlayerController()
 {
+	UE_LOG(LogTemp, Warning, TEXT("DONKEY::TankPlayerController.cpp Constructor"));
 	PrimaryActorTick.bCanEverTick = true;
 }
 
 void ATankPlayerController::BeginPlay()
 {
-	UE_LOG(LogTemp, Warning, TEXT("DONKEY::TankPlayerController.cpp"));
+	UE_LOG(LogTemp, Warning, TEXT("DONKEY::TankPlayerController.cpp Beginplay"));
 	Super::BeginPlay();
 
 	if (GetControlledTank())

@@ -7,6 +7,7 @@
 // Sets default values
 AProjectile::AProjectile()
 {
+	UE_LOG(LogTemp, Warning, TEXT("DONKEY::Projectile.cpp Constructor"));
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
@@ -17,7 +18,7 @@ AProjectile::AProjectile()
 // Called when the game starts or when spawned
 void AProjectile::BeginPlay()
 {
-	UE_LOG(LogTemp, Warning, TEXT("DONKEY::Projectile.cpp"));
+	UE_LOG(LogTemp, Warning, TEXT("DONKEY::Projectile.cpp Beginplay"));
 	Super::BeginPlay();
 	
 }
