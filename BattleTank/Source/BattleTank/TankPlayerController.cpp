@@ -6,6 +6,7 @@
 //#include "GameFramework/Actor.h"
 #include "Engine/World.h"
 #include "DrawDebugHelpers.h"
+#include "TankAimingComponent.h"
 //#include "Math/Vector.h"
 
 
@@ -14,15 +15,23 @@
 
 ATankPlayerController::ATankPlayerController()
 {
-	UE_LOG(LogTemp, Warning, TEXT("DONKEY::TankPlayerController.cpp Constructor"));
 	PrimaryActorTick.bCanEverTick = true;
 }
 
 void ATankPlayerController::BeginPlay()
 {
-	UE_LOG(LogTemp, Warning, TEXT("DONKEY::TankPlayerController.cpp Beginplay"));
 	Super::BeginPlay();
 
+	auto AimingComponent = GetControlledTank()->FindComponentByClass<UTankAimingComponent>();
+	if (AimingComponent)
+	{
+		FoundAimingComponent(AimingComponent);
+	}
+	else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("PlayerController can't find AimingComponent at BeginPlay"));
+	}
+	
 	if (GetControlledTank())
 	{
 		FString MyPawn = GetControlledTank()->GetName();
@@ -119,5 +128,4 @@ ATank* ATankPlayerController::GetControlledTank() const
 {
 	return Cast<ATank>(GetPawn());
 }
-
 
