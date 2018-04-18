@@ -23,7 +23,7 @@ void ATankPlayerController::BeginPlay()
 	Super::BeginPlay();
 
 	auto AimingComponent = GetControlledTank()->FindComponentByClass<UTankAimingComponent>();
-	if (AimingComponent)
+	if (ensure(AimingComponent))
 	{
 		FoundAimingComponent(AimingComponent);
 	}
@@ -32,7 +32,7 @@ void ATankPlayerController::BeginPlay()
 		UE_LOG(LogTemp, Warning, TEXT("PlayerController can't find AimingComponent at BeginPlay"));
 	}
 	
-	if (GetControlledTank())
+	if (ensure(GetControlledTank()))
 	{
 		FString MyPawn = GetControlledTank()->GetName();
 		UE_LOG(LogTemp, Warning, TEXT("I'm the player. My name is %s"), *MyPawn);
@@ -50,7 +50,7 @@ void ATankPlayerController::Tick(float DeltaTime)
 void ATankPlayerController::AimTowardsCrosshair()
 {
 	
-	if(!GetControlledTank())	{	return;	} // get out if no tank
+	if(!ensure(GetControlledTank()))	{	return;	} // get out if no tank
 
 	FVector HitLocation; // Out Parameter
 	if (GetSightRayHitLocation(HitLocation))

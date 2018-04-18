@@ -19,7 +19,7 @@ void ATankAIController::Tick(float DeltaTime)
 	auto ControlledTank = Cast<ATank>(GetPawn());
 
 	//if (!Cast<ATank>(GetWorld()->GetFirstPlayerController()->GetPawn())) { return; } // get out if no player is found possessed
-	if (PlayerTank)
+	if (ensure(PlayerTank))
 	{	
 		// Move towards the player
 		MoveToActor(PlayerTank, AcceptanceRadius);	
