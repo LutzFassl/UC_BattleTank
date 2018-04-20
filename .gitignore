@@ -4,3 +4,4 @@
 *.ttf
 *.exe
 WindowsNoEditor/
+.vs/
