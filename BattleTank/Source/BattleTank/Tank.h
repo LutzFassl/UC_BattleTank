@@ -22,12 +22,6 @@ public:
 	ATank();
 	void AimAt(FVector);
 
-	UFUNCTION(BlueprintCallable, Category = Setup)	// can be called from BP
-	void SetAimingComponent(UTankAimingComponent * AimingComponentToSet);
-
-	UFUNCTION(BlueprintCallable, Category = Setup)	// can be called from BP
-	UTankAimingComponent* GetAimingComponent();
-
 	UFUNCTION(BlueprintCallable)
 	void Fire();
 

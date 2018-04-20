@@ -17,22 +17,6 @@ ATank::ATank()
 	
 }
 
-void ATank::SetAimingComponent(UTankAimingComponent * AimingComponentToSet)
-{
-	if (!ensure(AimingComponentToSet)) { return; }
-	TankAimingComponent = AimingComponentToSet;
-}
-
-UTankAimingComponent * ATank::GetAimingComponent()
-{
-	if (ensure(TankAimingComponent))
-	{ return TankAimingComponent; }
-	else
-	{
-		return nullptr;
-	}
-}
-
 void ATank::AimAt(FVector HitLocation)
 {
 	if (!ensure(TankAimingComponent)) { return; }
@@ -77,6 +61,8 @@ void ATank::BeginPlay()
 {
 	Super::BeginPlay();
 	LastFireTime = FPlatformTime::Seconds();
+
+	TankAimingComponent = FindComponentByClass<UTankAimingComponent>();
 	
 }
 
