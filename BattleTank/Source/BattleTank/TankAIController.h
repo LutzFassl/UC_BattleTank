@@ -22,8 +22,7 @@ class BATTLETANK_API ATankAIController : public AAIController
 public:
 
 protected:
-	
-	
+		
 	
 private:
 	virtual void BeginPlay();

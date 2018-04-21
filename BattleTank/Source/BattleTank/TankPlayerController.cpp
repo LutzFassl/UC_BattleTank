@@ -11,8 +11,6 @@
 
 
 
-
-
 ATankPlayerController::ATankPlayerController()
 {
 	PrimaryActorTick.bCanEverTick = true;
@@ -22,7 +20,7 @@ void ATankPlayerController::BeginPlay()
 {
 	Super::BeginPlay();
 
-	auto AimingComponent = GetControlledTank()->FindComponentByClass<UTankAimingComponent>();
+	auto AimingComponent = GetPawn()->FindComponentByClass<UTankAimingComponent>();
 	if (ensure(AimingComponent))
 	{
 		FoundAimingComponent(AimingComponent);
@@ -31,13 +29,7 @@ void ATankPlayerController::BeginPlay()
 	{
 		UE_LOG(LogTemp, Warning, TEXT("PlayerController can't find AimingComponent at BeginPlay"));
 	}
-	
-	if (ensure(GetControlledTank()))
-	{
-		FString MyPawn = GetControlledTank()->GetName();
-		UE_LOG(LogTemp, Warning, TEXT("I'm the player. My name is %s"), *MyPawn);
-	}
-	
+		
 }
 
 void ATankPlayerController::Tick(float DeltaTime)
@@ -49,22 +41,15 @@ void ATankPlayerController::Tick(float DeltaTime)
 
 void ATankPlayerController::AimTowardsCrosshair()
 {
-	
-	if(!ensure(GetControlledTank()))	{	return;	} // get out if no tank
+	auto AimingComponent = GetPawn()->FindComponentByClass<UTankAimingComponent>();
+	if(!ensure(AimingComponent))	{	return;	} // get out if no tank
 
 	FVector HitLocation; // Out Parameter
 	if (GetSightRayHitLocation(HitLocation))
 	{
-		GetControlledTank()->AimAt(HitLocation);
+		//GetControlledTank()->AimAt(HitLocation);
 	}
 
-	
-
-	
-
-	// Get world location of linetrace through crosshair
-	// If it hits the landscape
-		// tell controlled tank to to aim at this point
 }
 
 bool ATankPlayerController::GetSightRayHitLocation(FVector& HitLocation) const
@@ -97,14 +82,8 @@ bool ATankPlayerController::GetLookDirection(FVector2D ScreenLocation, FVector &
 
 bool ATankPlayerController::GetLookVectorHitLocation(FVector LookDirection, FVector& HitLocation) const	//needs position and direction
 {
-	//FCollisionQueryParams TraceParameters(FName(TEXT("")), false, GetOwner());	//Definition of optional parameters not necessary
-	//FCollisionResponseParams ResponseParam(ECollisionResponse::ECR_Overlap);		//Definition of optional parameters not necessary
-
 	auto StartLocation = PlayerCameraManager->GetCameraLocation();
 	auto EndLocation = StartLocation + LookDirection * LineTraceRange;	// No Normalization necessary, already Unit vector; 1 unit = 1cm; multiplied with 1'000'000 to set length to 10km
-
-
-	//DrawDebugLine(GetWorld(), StartLocation + LookDirection * 2000, EndLocation, FColor(255, 0, 255), false, 0.f, 0.f, 25.f);
 
 	FHitResult HitResult;
 	if (GetWorld()->LineTraceSingleByChannel(		// Channel because it doesn't matter WHAT we're hitting, only WHERE we hit
@@ -112,8 +91,6 @@ bool ATankPlayerController::GetLookVectorHitLocation(FVector LookDirection, FVec
 		StartLocation,
 		EndLocation,
 		ECollisionChannel::ECC_Visibility
-		//TraceParameters,		--> not necessary OPTIONAL
-		//ResponseParam			--> not necessary OPTIONAL
 	)) 
 	{
 		HitLocation =	HitResult.Location;
