@@ -20,31 +20,30 @@ public:
 	// Sets default values for this pawn's properties
 	ATank();
 
-	UFUNCTION(BlueprintCallable)
-	void Fire();
+	//UFUNCTION(BlueprintCallable)
+	//void Fire();
 
-	UFUNCTION(BlueprintCallable)
-	FString GetRemainingReload();
+	//UFUNCTION(BlueprintCallable)
+	//FString GetRemainingReload();
 
-	UPROPERTY(EditDefaultsOnly, Category = Setup)
-	TSubclassOf<AProjectile> ProjectileBlueprint;
-	//UClass* ProjectileBlueprint;
+	//UPROPERTY(EditDefaultsOnly, Category = Setup)
+	//TSubclassOf<AProjectile> ProjectileBlueprint;
 
-	float LaunchSpeed = 15000.f;	// 100000 = 1000 m/s;
+	//float LaunchSpeed = 15000.f;	// 100000 = 1000 m/s;
 
-	UPROPERTY(EditDefaultsOnly, Category = Firing)
-	float ReloadTimeInSeconds = 3;	// seconds
+	//UPROPERTY(EditDefaultsOnly, Category = Firing)
+	//float ReloadTimeInSeconds = 3;	// seconds
 
 protected:
-	UPROPERTY(BlueprintReadWrite)
-	UTankBarrel* Barrel = nullptr;
+	//UPROPERTY(BlueprintReadWrite)
+	//UTankBarrel* Barrel = nullptr;
 
 private:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 	//void Tick(float DeltaTime);
 	
-	double LastFireTime = 0;
+	//double LastFireTime = 0;
 
 	
 	

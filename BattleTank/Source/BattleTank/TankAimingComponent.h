@@ -7,6 +7,7 @@
 #include "TankAimingComponent.generated.h"
 class UTankBarrel;
 class UTankTurret;
+class AProjectile;
 
 UENUM()		//"BlueprintType" is essential to include
 enum class EFiringState : uint8
@@ -27,8 +28,20 @@ public:
 	
 	void AimAt(FVector);
 
+	UFUNCTION(BlueprintCallable)
+	void Fire();
+
 	UFUNCTION(BlueprintCallable, Category = Setup)
 	void AimingInitialize(UTankTurret * TurretToSet, UTankBarrel * BarrelToSet);
+
+	UFUNCTION(BlueprintCallable)
+	FString GetRemainingReload();
+
+	UPROPERTY(EditDefaultsOnly, Category = Setup)
+	TSubclassOf<AProjectile> ProjectileBlueprint;
+
+	UPROPERTY(EditDefaultsOnly, Category = Firing)
+	float ReloadTimeInSeconds = 3;	// seconds
 
 protected:
 	UPROPERTY(BlueprintReadOnly, Category = State)
@@ -38,14 +51,18 @@ protected:
 	float LaunchSpeed = 15000.f;	// 100000 = 1000 m/s;
 
 private:
-	UTankAimingComponent();
+	bool bLastSolution = false;
+	double LastFireTime = 0;
+
 	UTankBarrel * Barrel = nullptr;
 	UTankTurret * Turret = nullptr;
 
+	UTankAimingComponent();
 	void MoveBarrelTowards(FVector);
 	void MoveTurretTowards(FVector);
+	void BeginPlay() override;
 
-	bool bLastSolution = false;
+	
 	
 
 
