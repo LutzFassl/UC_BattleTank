@@ -3,8 +3,6 @@
 #include "TankAIController.h"
 #include "TankAimingComponent.h"
 
-//#include "Engine/World.h"		kann man einkommentieren wenn es stört, dass VB GetWorld nicht kennt
-
 void ATankAIController::BeginPlay()
 {
 	Super::BeginPlay();

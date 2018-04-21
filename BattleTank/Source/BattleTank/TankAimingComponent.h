@@ -51,16 +51,17 @@ protected:
 	float LaunchSpeed = 15000.f;	// 100000 = 1000 m/s;
 
 private:
-	bool bLastSolution = false;
-	double LastFireTime = 0;
-
-	UTankBarrel * Barrel = nullptr;
-	UTankTurret * Turret = nullptr;
-
 	UTankAimingComponent();
 	void MoveBarrelTowards(FVector);
 	void MoveTurretTowards(FVector);
 	void BeginPlay() override;
+
+	bool bLastSolution = false;
+	double LastFireTime = 0;
+	UTankBarrel * Barrel = nullptr;
+	UTankTurret * Turret = nullptr;
+
+	
 
 	
 	

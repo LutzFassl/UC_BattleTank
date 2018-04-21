@@ -1,8 +1,6 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "TankAimingComponent.h"
-#include "Components/SceneComponent.h"
-//#include "Components/SceneComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "TankBarrel.h"
 #include "TankTurret.h"
@@ -52,13 +50,6 @@ void UTankAimingComponent::AimAt(FVector HitLocation)
 	auto Time = GetWorld()->GetTimeSeconds();
 	if (bHaveAimSolution)
 	{
-		//Log reporting function
-		//if (bLastSolution == false) {
-		//	bLastSolution = true;
-		//	auto OwningTank = GetOwner()->GetName();
-		//	UE_LOG(LogTemp, Warning, TEXT("%f: Aiming solution found by %s"), Time, *OwningTank);
-		//}
-
 		auto AimDirection = OutLaunchVelocity.GetSafeNormal();
 		MoveBarrelTowards(AimDirection);
 		MoveTurretTowards(AimDirection);
@@ -66,17 +57,6 @@ void UTankAimingComponent::AimAt(FVector HitLocation)
 	else
 	{
 		// no Aiming solution found
-
-		// complain that no solution was found to log but only once
-
-		//Log reporting function
-		//if (bLastSolution == true) 
-		//{
-		//bLastSolution = false;
-		//auto OwningTank = GetOwner()->GetName();
-		//UE_LOG(LogTemp, Warning, TEXT("%f: Aiming solution lost by %s"), Time, *OwningTank);
-		//}
-		
 	}	
 }
 
@@ -118,7 +98,8 @@ void UTankAimingComponent::MoveTurretTowards(FVector AimDirection)
 
 void UTankAimingComponent::Fire()
 {
-	if (!ensure(Barrel)) { return; }
+	if (!ensure(ProjectileBlueprint && Barrel)) { return; }
+
 	bool isReloaded = FPlatformTime::Seconds() - LastFireTime > ReloadTimeInSeconds;
 
 	if (isReloaded)
