@@ -1,7 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "TankAIController.h"
-#include "Tank.h"
+#include "TankAimingComponent.h"
 
 //#include "Engine/World.h"		kann man einkommentieren wenn es stört, dass VB GetWorld nicht kennt
 
@@ -15,20 +15,19 @@ void ATankAIController::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	auto PlayerTank = Cast<ATank>(GetWorld()->GetFirstPlayerController()->GetPawn());
-	auto ControlledTank = Cast<ATank>(GetPawn());
-
-	//if (!Cast<ATank>(GetWorld()->GetFirstPlayerController()->GetPawn())) { return; } // get out if no player is found possessed
-	if (ensure(PlayerTank))
-	{	
-		// Move towards the player
-		MoveToActor(PlayerTank, AcceptanceRadius);	
-		
-		FVector HitLocation = PlayerTank->GetActorLocation();
-		//ControlledTank->AimAt(HitLocation);
-		ControlledTank->Fire();
-	 }
+	auto PlayerTank = GetWorld()->GetFirstPlayerController()->GetPawn();
+	auto ControlledTank = GetPawn();
+	if (!ensure(ControlledTank && PlayerTank)) { return; }
 	
+	// Move towards the player
+	MoveToActor(PlayerTank, AcceptanceRadius);	
+	
+	// Aim at Player
+	FVector HitLocation = PlayerTank->GetActorLocation();
+	auto AimingComponent = ControlledTank->FindComponentByClass<UTankAimingComponent>();
+	AimingComponent->AimAt(HitLocation);
+
+	//ControlledTank->Fire();
 	return;
 }
 
