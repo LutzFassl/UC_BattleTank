@@ -11,13 +11,33 @@
 // Sets default values for this component's properties
 UTankAimingComponent::UTankAimingComponent()
 {
-	PrimaryComponentTick.bCanEverTick = false;
+	PrimaryComponentTick.bCanEverTick = true;
 }
 
 void UTankAimingComponent::BeginPlay()
 {
-	Super::BeginPlay();
+	//Super::BeginPlay();
 	LastFireTime = FPlatformTime::Seconds();
+}
+
+void UTankAimingComponent::TickComponent(float DeltaTime, enum ELevelTick TickType, FActorComponentTickFunction * ThisTickFunction)
+{
+	
+	if (FPlatformTime::Seconds() - LastFireTime > ReloadTimeInSeconds)
+	{
+		FiringState = EFiringState::Aiming;
+	}
+	else
+	{ 
+		FiringState = EFiringState::Reloading;
+	}
+	
+	//My appraoch - to delete
+	//float rawReloadLeft = ReloadTimeInSeconds - (FPlatformTime::Seconds() - LastFireTime);
+	//if (rawReloadLeft > 0) { FiringState = EFiringState::Reloading; }
+	//if (DeltaRotator1.Pitch < 1 && DeltaRotator2.Yaw < 1 && rawReloadLeft <= 0) { FiringState = EFiringState::Locked; }
+	//if (DeltaRotator1.Pitch > 1 && DeltaRotator2.Yaw > 1 && rawReloadLeft <= 0) { FiringState = EFiringState::Aiming; }
+	//UE_LOG(LogTemp, Warning, TEXT("%f, %f"), DeltaRotator1.Pitch, DeltaRotator2.Yaw);
 }
 
 void UTankAimingComponent::AimAt(FVector HitLocation)
@@ -99,10 +119,7 @@ void UTankAimingComponent::MoveTurretTowards(FVector AimDirection)
 void UTankAimingComponent::Fire()
 {
 	if (!ensure(ProjectileBlueprint && Barrel)) { return; }
-
-	bool isReloaded = FPlatformTime::Seconds() - LastFireTime > ReloadTimeInSeconds;
-
-	if (isReloaded)
+	if (FiringState != EFiringState::Reloading)
 	{
 		// spawn projectile at socket location
 		FVector StartLocation = Barrel->GetSocketLocation(FName("Projectile"));
