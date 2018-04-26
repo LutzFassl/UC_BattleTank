@@ -57,8 +57,12 @@ private:
 	virtual void BeginPlay() override;
 	virtual void TickComponent(float DeltaTime,	enum ELevelTick TickType,FActorComponentTickFunction * ThisTickFunction) override;
 
+	bool IsBarrelMoving();
+
 	bool bLastSolution = false;
 	double LastFireTime = 0;
 	UTankBarrel * Barrel = nullptr;
 	UTankTurret * Turret = nullptr;
+	//FVector AimDirection = FVector(0);
+	FRotator DeltaRotator = FRotator(0);
 };

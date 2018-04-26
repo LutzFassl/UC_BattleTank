@@ -23,13 +23,17 @@ void UTankAimingComponent::BeginPlay()
 void UTankAimingComponent::TickComponent(float DeltaTime, enum ELevelTick TickType, FActorComponentTickFunction * ThisTickFunction)
 {
 	
-	if (FPlatformTime::Seconds() - LastFireTime > ReloadTimeInSeconds)
+	if (FPlatformTime::Seconds() - LastFireTime < ReloadTimeInSeconds)
+	{
+		FiringState = EFiringState::Reloading;
+	}
+	else if (IsBarrelMoving())
 	{
 		FiringState = EFiringState::Aiming;
 	}
 	else
 	{ 
-		FiringState = EFiringState::Reloading;
+		FiringState = EFiringState::Locked;
 	}
 	
 	//My appraoch - to delete
@@ -38,6 +42,13 @@ void UTankAimingComponent::TickComponent(float DeltaTime, enum ELevelTick TickTy
 	//if (DeltaRotator1.Pitch < 1 && DeltaRotator2.Yaw < 1 && rawReloadLeft <= 0) { FiringState = EFiringState::Locked; }
 	//if (DeltaRotator1.Pitch > 1 && DeltaRotator2.Yaw > 1 && rawReloadLeft <= 0) { FiringState = EFiringState::Aiming; }
 	//UE_LOG(LogTemp, Warning, TEXT("%f, %f"), DeltaRotator1.Pitch, DeltaRotator2.Yaw);
+}
+
+bool UTankAimingComponent::IsBarrelMoving()
+{
+	//UE_LOG(LogTemp, Warning, TEXT("Delta Pitch: %f"), DeltaRotator.Pitch);
+	if (FMath::Abs(DeltaRotator.Pitch) < 0.5f) { return true; }
+	return false;
 }
 
 void UTankAimingComponent::AimAt(FVector HitLocation)
@@ -92,7 +103,7 @@ void UTankAimingComponent::MoveBarrelTowards(FVector AimDirection)
 	if (!ensure (Turret && Barrel)) { return; }
 	auto BarrelRotator = Barrel->GetForwardVector().Rotation();
 	auto AimAsRotator = AimDirection.Rotation();
-	auto DeltaRotator = AimAsRotator - BarrelRotator;
+	DeltaRotator = AimAsRotator - BarrelRotator;
 
 	//UE_LOG(LogTemp, Warning, TEXT("AimAsRotator: %s"), *AimAsRotator.ToString());
 
