@@ -23,7 +23,11 @@ void UTankAimingComponent::BeginPlay()
 void UTankAimingComponent::TickComponent(float DeltaTime, enum ELevelTick TickType, FActorComponentTickFunction * ThisTickFunction)
 {
 	
-	if (FPlatformTime::Seconds() - LastFireTime < ReloadTimeInSeconds)
+	if (CurrentAmmo <= 0)
+	{
+		FiringState = EFiringState::OutOfAmmo;
+	}
+	else if (FPlatformTime::Seconds() - LastFireTime < ReloadTimeInSeconds)
 	{
 		FiringState = EFiringState::Reloading;
 	}
@@ -128,7 +132,7 @@ void UTankAimingComponent::MoveBarrelTowards(FVector AimDirection)
 void UTankAimingComponent::Fire()
 {
 	if (!ensure(ProjectileBlueprint && Barrel)) { return; }
-	if (FiringState != EFiringState::Reloading)
+	if (FiringState != EFiringState::Reloading && FiringState != EFiringState::OutOfAmmo)
 	{
 		// spawn projectile at socket location
 		FVector StartLocation = Barrel->GetSocketLocation(FName("Projectile"));
@@ -139,10 +143,16 @@ void UTankAimingComponent::Fire()
 		auto Projectile = GetWorld()->SpawnActor<AProjectile>(ProjectileBlueprint, StartLocation, StartRotation);
 		Projectile->LaunchProjectile(LaunchSpeed);
 		LastFireTime = FPlatformTime::Seconds();	// Set Time of last fire event
+		CurrentAmmo--;
 	}
 }
 
-FString UTankAimingComponent::GetRemainingReload()
+int UTankAimingComponent::GetAmountOfAmmo() const
+{
+	return CurrentAmmo;
+}
+
+FString UTankAimingComponent::GetRemainingReload() const
 {
 	float rawReloadLeft = ReloadTimeInSeconds - (FPlatformTime::Seconds() - LastFireTime);
 	if (rawReloadLeft <= 0)
