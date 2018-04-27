@@ -19,13 +19,12 @@ void UTankTrack::TickComponent(float DeltaTime, enum ELevelTick TickType, FActor
 	//UE_LOG(LogTemp, Warning, TEXT("I am ticking."));
 
 	//Calc slippage speed
-	auto SlippageSpeed = FVector::DotProduct(GetComponentVelocity(), GetRightVector());
-	UE_LOG(LogTemp, Warning, TEXT("Speed vs Slip Speed: %f, %f"), GetComponentVelocity().Size(), SlippageSpeed);
-	// Work out required accelration this frame to correct
-	float a = -SlippageSpeed / 0.5;
-	// Calculate and appliy sideways force F = m*a
-	float Force = a * 40000;
-	Cast<UPrimitiveComponent>(GetOwner()->GetRootComponent())->AddForceAtLocation(GetRightVector()*SlippageSpeed, GetComponentLocation());
+	auto SlippageSpeed = FVector::DotProduct(GetRightVector(), GetComponentVelocity());
+	//UE_LOG(LogTemp, Warning, TEXT("Speed vs Slip Speed: %f, %f"), GetComponentVelocity().Size(), SlippageSpeed);
+	auto CorrectionAcceleration = -SlippageSpeed / DeltaTime * GetRightVector();
+	auto TankRoot = Cast<UStaticMeshComponent>(GetOwner()->GetRootComponent());
+	auto CorrectionForce = TankRoot->GetMass() * CorrectionAcceleration /2;	// divided by 2 because each track will apply it
+	TankRoot->AddForce(CorrectionForce);
 }
 
 void UTankTrack::SetThrottle(float Throttle)
