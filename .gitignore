@@ -5,3 +5,4 @@
 *.exe
 WindowsNoEditor/
 .vs/
+*.blend

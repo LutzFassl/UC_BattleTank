@@ -117,12 +117,8 @@ void UTankAimingComponent::MoveBarrelTowards(FVector AimDirection)
 	// Move barrel right amount this frame, max elev speed and frame time
 	
 	Barrel->Elevate(DeltaRotator.Pitch);		
-	
-	float CorrectedYawDeltaRotator = FMath::Abs(DeltaRotator.Yaw);
-	if (DeltaRotator.Yaw > 180)	{CorrectedYawDeltaRotator = DeltaRotator.Yaw - 360;	}
-	else if (DeltaRotator.Yaw < -180) { CorrectedYawDeltaRotator = DeltaRotator.Yaw + 360; }
-	else { CorrectedYawDeltaRotator = DeltaRotator.Yaw; }
-	Turret->Rotate(CorrectedYawDeltaRotator);
+	if (FMath::Abs(DeltaRotator.Yaw) < 180)	{ Turret->Rotate(DeltaRotator.Yaw); }
+	else { Turret->Rotate(-DeltaRotator.Yaw); }
 
 	//UE_LOG(LogTemp, Warning, TEXT("Delta Yaw: %f, %f"), DeltaRotator.Yaw, CorrectedYawDeltaRotator);
 	
