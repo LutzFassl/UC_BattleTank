@@ -47,6 +47,11 @@ void ATankPlayerController::AimTowardsCrosshair()
 	if(!ensure(AimingComponent))	{	return;	} // get out if no tank
 
 	FVector HitLocation; // Out Parameter
+	bool bGotHitLocation = GetSightRayHitLocation(HitLocation);
+	//UE_LOG(LogTemp, Warning, TEXT("GotHitLocation: %s"), (bGotHitLocation ? TEXT("True") : TEXT("False")));
+	//UE_LOG(LogTemp, Warning, TEXT("GotHitLocation: %i"), bGotHitLocation);
+	//UE_LOG(LogTemp, Warning, TEXT("Hitlocation: %s"), *HitLocation.ToString());
+
 	if (GetSightRayHitLocation(HitLocation))
 	{
 		AimingComponent->AimAt(HitLocation);
@@ -70,7 +75,7 @@ bool ATankPlayerController::GetSightRayHitLocation(FVector& HitLocation) const
 		GetLookVectorHitLocation(LookDirection,HitLocation);
 	}
 
-	return true;
+	return !HitLocation.Equals(FVector(0), 0.01);
 }
 
 // Calculate 3D Look direction from 2D Crosshair position. Use OUT Parameter LookDirection
