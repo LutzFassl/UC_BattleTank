@@ -22,5 +22,10 @@ public:
 	// Max Force per Track in Newton
 	UPROPERTY(EditDefaultsOnly)
 	float TrackMaxDrivingForce = 400000;
-	
-};
+
+private:
+	UTankTrack();
+	void OnRegister();
+	void TickComponent(float DeltaTime, enum ELevelTick TickType, FActorComponentTickFunction * ThisTickFunction);
+
+ };
