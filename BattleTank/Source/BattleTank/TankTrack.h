@@ -27,11 +27,11 @@ private:
 	UTankTrack();
 	virtual void BeginPlay() override;
 	//void OnRegister();
-	void TickComponent(float DeltaTime, enum ELevelTick TickType, FActorComponentTickFunction * ThisTickFunction);
+	void ApplySidewaysForce();
 	
 	UFUNCTION()
 	void OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComponent, FVector NormalImpulse, const FHitResult& Hit);
-
-	bool TankIsInTheAir = true;
-
+	
+	void DriveTrack();
+	float CurrentThrottle = 0;
  };
