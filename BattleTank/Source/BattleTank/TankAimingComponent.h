@@ -53,7 +53,6 @@ protected:
 private:
 	UTankAimingComponent();
 	void MoveBarrelTowards(FVector);
-	void MoveTurretTowards(FVector);
 	virtual void BeginPlay() override;
 	virtual void TickComponent(float DeltaTime,	enum ELevelTick TickType,FActorComponentTickFunction * ThisTickFunction) override;
 	bool IsBarrelMoving();

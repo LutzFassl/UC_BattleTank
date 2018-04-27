@@ -72,10 +72,9 @@ bool ATankPlayerController::GetSightRayHitLocation(FVector& HitLocation) const
 	if (GetLookDirection(ScreenLocation, LookDirection))
 	{
 		// Ray-Casting / Line Tracing
-		GetLookVectorHitLocation(LookDirection,HitLocation);
+		return GetLookVectorHitLocation(LookDirection,HitLocation);
 	}
-
-	return !HitLocation.Equals(FVector(0), 0.01);
+	return false;
 }
 
 // Calculate 3D Look direction from 2D Crosshair position. Use OUT Parameter LookDirection
