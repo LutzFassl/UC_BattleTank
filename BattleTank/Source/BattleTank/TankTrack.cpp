@@ -22,6 +22,7 @@ void UTankTrack::BeginPlay()
 
 void UTankTrack::TickComponent(float DeltaTime, enum ELevelTick TickType, FActorComponentTickFunction * ThisTickFunction)
 {
+	TankIsInTheAir = true;
 	Super::TickComponent(DeltaTime,TickType, ThisTickFunction);
 	//UE_LOG(LogTemp, Warning, TEXT("I am ticking."));
 
@@ -31,12 +32,14 @@ void UTankTrack::TickComponent(float DeltaTime, enum ELevelTick TickType, FActor
 	auto CorrectionAcceleration = -SlippageSpeed / DeltaTime * GetRightVector();
 	auto TankRoot = Cast<UStaticMeshComponent>(GetOwner()->GetRootComponent());
 	auto CorrectionForce = TankRoot->GetMass() * CorrectionAcceleration /2;	// divided by 2 because each track will apply it
-	TankRoot->AddForce(CorrectionForce);
+	
+	if (TankIsInTheAir == false) { TankRoot->AddForce(CorrectionForce); }
 }
 
 void UTankTrack::OnHit(UPrimitiveComponent * HitComponent, AActor * OtherActor, UPrimitiveComponent * OtherComponent, FVector NormalImpulse, const FHitResult & Hit)
 {
-	UE_LOG(LogTemp, Warning, TEXT("I got hit. %s"), *GetName());
+	//UE_LOG(LogTemp, Warning, TEXT("I got hit. %s"), *GetName());
+	TankIsInTheAir = false;
 }
 
 void UTankTrack::SetThrottle(float Throttle)
