@@ -43,6 +43,10 @@ public:
 	UPROPERTY(EditDefaultsOnly, Category = Firing)
 	float ReloadTimeInSeconds = 3;	// seconds
 
+	EFiringState GetFiringState() const;
+
+	
+
 protected:
 	UPROPERTY(BlueprintReadOnly, Category = State)
 	EFiringState FiringState = EFiringState::Reloading;
@@ -56,7 +60,6 @@ private:
 	virtual void BeginPlay() override;
 	virtual void TickComponent(float DeltaTime,	enum ELevelTick TickType,FActorComponentTickFunction * ThisTickFunction) override;
 	bool IsBarrelMoving();
-	
 
 	bool bLastSolution = false;
 	double LastFireTime = 0;

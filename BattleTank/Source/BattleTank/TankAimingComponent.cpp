@@ -155,3 +155,8 @@ FString UTankAimingComponent::GetRemainingReload()
 		return FString::SanitizeFloat(RoundedValue);
 	}
 }
+
+EFiringState UTankAimingComponent::GetFiringState() const
+{
+	return FiringState;
+}

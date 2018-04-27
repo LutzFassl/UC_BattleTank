@@ -24,7 +24,7 @@ void ATankAIController::Tick(float DeltaTime)
 	FVector HitLocation = PlayerTank->GetActorLocation();
 	auto AimingComponent = ControlledTank->FindComponentByClass<UTankAimingComponent>();
 	AimingComponent->AimAt(HitLocation);
-	AimingComponent->Fire();
+	if (AimingComponent->GetFiringState() == EFiringState::Locked) { AimingComponent->Fire(); }
 	return;
 }
 
