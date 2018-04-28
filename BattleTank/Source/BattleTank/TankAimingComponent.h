@@ -49,7 +49,11 @@ public:
 
 	EFiringState GetFiringState() const;
 
-	
+	UFUNCTION(BlueprintCallable)
+	void DisableBarrelMovement();
+
+	UFUNCTION(BlueprintCallable)
+	void EnableBarrelMovement();
 
 protected:
 	UPROPERTY(BlueprintReadOnly, Category = State)
@@ -57,6 +61,9 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, Category = Firing)
 	float LaunchSpeed = 15000.f;	// 100000 = 1000 m/s;
+
+	UPROPERTY(EditDefaultsOnly, Category = Firing)
+	int CurrentAmmo = 10;
 
 private:
 	UTankAimingComponent();
@@ -71,5 +78,5 @@ private:
 	UTankTurret * Turret = nullptr;
 	FVector AimDirection = FVector(0);
 
-	int CurrentAmmo = 10;
+	bool bBarrelMovementIsAllowed = true;
 };

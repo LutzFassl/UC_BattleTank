@@ -116,9 +116,12 @@ void UTankAimingComponent::MoveBarrelTowards(FVector AimDirection)
 	// Check if it has a solution
 	// Move barrel right amount this frame, max elev speed and frame time
 	
+	if (bBarrelMovementIsAllowed) 
+	{
 	Barrel->Elevate(DeltaRotator.Pitch);		
 	if (FMath::Abs(DeltaRotator.Yaw) < 180)	{ Turret->Rotate(DeltaRotator.Yaw); }
 	else { Turret->Rotate(-DeltaRotator.Yaw); }
+	}
 
 	//UE_LOG(LogTemp, Warning, TEXT("Delta Yaw: %f, %f"), DeltaRotator.Yaw, CorrectedYawDeltaRotator);
 	
@@ -166,3 +169,14 @@ EFiringState UTankAimingComponent::GetFiringState() const
 {
 	return FiringState;
 }
+
+void UTankAimingComponent::DisableBarrelMovement()
+{
+	bBarrelMovementIsAllowed = false;
+}
+
+void UTankAimingComponent::EnableBarrelMovement()
+{
+	bBarrelMovementIsAllowed = true;
+}
+
