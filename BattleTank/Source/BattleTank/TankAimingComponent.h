@@ -45,7 +45,7 @@ public:
 	float ReloadTimeInSeconds = 3;	// seconds
 
 	UFUNCTION(BlueprintCallable, Category = Firing)
-	int GetAmountOfAmmo() const;
+	int32 GetAmountOfAmmo() const;
 
 	EFiringState GetFiringState() const;
 
@@ -63,7 +63,7 @@ protected:
 	float LaunchSpeed = 15000.f;	// 100000 = 1000 m/s;
 
 	UPROPERTY(EditDefaultsOnly, Category = Firing)
-	int CurrentAmmo = 10;
+	int32 CurrentAmmo = 10;
 
 private:
 	UTankAimingComponent();
