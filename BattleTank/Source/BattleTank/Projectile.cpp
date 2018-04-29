@@ -39,7 +39,6 @@ void AProjectile::BeginPlay()
 {
 	Super::BeginPlay();
 	CollisionMesh->OnComponentHit.AddDynamic(this, &AProjectile::OnHit);
-	
 }
 
 void AProjectile::LaunchProjectile(float Speed)
@@ -56,7 +55,14 @@ void AProjectile::OnHit(UPrimitiveComponent * HitComponent, AActor * OtherActor,
 	LaunchBlast->Deactivate();
 	ImpactBlast->Activate();
 	ExplosionForce->FireImpulse();
-
-	//UE_LOG(LogTemp, Warning, TEXT("Exploding at %s"), *ExplosionForce->GetComponentLocation().ToString());	
+	SetRootComponent(ImpactBlast);
+	CollisionMesh->DestroyComponent();
+	FTimerHandle Timer;
+	GetWorldTimerManager().SetTimer(Timer, this, &AProjectile::OnTimerExpire, DestroyDelay, false);
+	//UE_LOG(LogTemp, Warning, TEXT("Exploding at %s"), *ExplosionForce->GetComponentLocation().ToString());
 }
 
+void AProjectile::OnTimerExpire()
+{
+	Destroy();
+}
