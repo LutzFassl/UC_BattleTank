@@ -15,11 +15,14 @@ class BATTLETANK_API ATank : public APawn
 	GENERATED_BODY()
 
 public:
-	ATank();
+	
+	UFUNCTION(BlueprintPure, Category = Health)		//BlueprintPure does not affect owning object. Like a "Blueprintcallable Readonly"
+	float GetHealthPercent() const;
 
 protected:
 
 private:
+	ATank();
 
 	virtual void BeginPlay() override;
 	virtual float TakeDamage(float DamageAmount, struct FDamageEvent const & DamageEvent, class AController * EventInstigator, AActor * DamageCauser) override;
