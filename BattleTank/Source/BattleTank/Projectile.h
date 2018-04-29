@@ -27,6 +27,18 @@ protected:
 	virtual void BeginPlay() override;
 
 private:
+	UFUNCTION()
+	void OnHit(UPrimitiveComponent * HitComponent, AActor * OtherActor, UPrimitiveComponent * OtherComponent, FVector NormalImpulse, const FHitResult & Hit);
+	
+	void OnTimerExpire();
+
+	UPROPERTY(EditDefaultsOnly, Category = Setup)
+	float DestroyDelay = 2;
+
+	UPROPERTY(EditDefaultsOnly, Category = Setup)
+	float ProjectileDamage = 20;
+	
+	
 	UProjectileMovementComponent * ProjectileMovement = nullptr;
 
 	UPROPERTY(VisibleAnywhere)
@@ -34,18 +46,11 @@ private:
 
 	UPROPERTY(VisibleAnywhere)
 	UParticleSystemComponent * LaunchBlast = nullptr;	
-
+	
 	UPROPERTY(VisibleAnywhere)
 	UParticleSystemComponent * ImpactBlast = nullptr;
-
+	
 	UPROPERTY(VisibleAnywhere)
 	URadialForceComponent * ExplosionForce = nullptr;
-
-	UPROPERTY(EditDefaultsOnly)
-	float DestroyDelay = 2;
-
-	UFUNCTION()
-	void OnHit(UPrimitiveComponent * HitComponent, AActor * OtherActor, UPrimitiveComponent * OtherComponent, FVector NormalImpulse, const FHitResult & Hit);
 	
-	void OnTimerExpire();
 };

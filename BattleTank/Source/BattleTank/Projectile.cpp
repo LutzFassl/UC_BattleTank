@@ -4,6 +4,7 @@
 #include "GameFramework/ProjectileMovementComponent.h"
 #include "Particles/ParticleSystemComponent.h"
 #include "PhysicsEngine/RadialForceComponent.h"
+#include "Kismet/GameplayStatics.h"
 #include "Components/StaticMeshComponent.h"	// Added for Intellisense
 
 
@@ -57,8 +58,20 @@ void AProjectile::OnHit(UPrimitiveComponent * HitComponent, AActor * OtherActor,
 	ExplosionForce->FireImpulse();
 	SetRootComponent(ImpactBlast);
 	CollisionMesh->DestroyComponent();
+
+	
+	UGameplayStatics::ApplyRadialDamage(
+		this,
+		ProjectileDamage,
+		GetActorLocation(),
+		ExplosionForce->Radius,
+		UDynamicClass::StaticClass(),
+		TArray<AActor*>()	// damage all actors
+		);
+
 	FTimerHandle Timer;
 	GetWorldTimerManager().SetTimer(Timer, this, &AProjectile::OnTimerExpire, DestroyDelay, false);
+	
 	//UE_LOG(LogTemp, Warning, TEXT("Exploding at %s"), *ExplosionForce->GetComponentLocation().ToString());
 }
 

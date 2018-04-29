@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+//#include "GameFramework/Actor.h"
 #include "Tank.generated.h"
 
 
@@ -19,5 +20,14 @@ public:
 protected:
 
 private:
+
 	virtual void BeginPlay() override;
+	virtual float TakeDamage(float DamageAmount, struct FDamageEvent const & DamageEvent, class AController * EventInstigator, AActor * DamageCauser) override;
+
+	UPROPERTY(EditDefaultsOnly, Category = Health)
+	int32 StartingHealth = 100;
+
+	UPROPERTY(VisibleAnywhere, Category = Health)
+	int32 CurrentHealth = StartingHealth;
+	
 };
