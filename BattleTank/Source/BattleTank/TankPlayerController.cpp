@@ -7,6 +7,7 @@
 #include "DrawDebugHelpers.h"
 #include "TankAimingComponent.h"
 //#include "Math/Vector.h"
+#include "Kismet/GameplayStatics.h"
 
 
 
@@ -37,6 +38,33 @@ void ATankPlayerController::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 	AimTowardsCrosshair();
+
+	
+}
+
+int32 ATankPlayerController::GetActiveEnemies()
+{
+	//ACharacter* MyCharacter = GetPlayerCharacter(UObject* WorldContextObject, 1);
+	int32 flippedTanks = 0;
+	int32 AITanks = GetWorld()->GetNumPawns() - 1;
+
+	for (FConstPawnIterator Iterator = GetWorld()->GetPawnIterator(); Iterator; ++Iterator)
+	{
+		APawn* ThisPawn = Cast<APawn>(*Iterator);
+		if (ensure(ThisPawn) && ensure(GetPawn()))
+		{
+			if (ThisPawn->GetName() != GetPawn()->GetName())
+			{
+				if (ThisPawn->GetActorRotation().Roll > 90 || ThisPawn->GetActorRotation().Roll < -90)
+				{
+					flippedTanks++;
+				}
+			}
+			//UE_LOG(LogTemp, Warning, TEXT("I am pawn: %s, My Rot is: %s"), *ThisPawn->GetName(), *ThisPawn->GetActorRotation().ToString());
+		}
+	}
+	//UE_LOG(LogTemp, Warning, TEXT("Flipped: %d"), enemies);
+	return AITanks - flippedTanks;
 }
 
 

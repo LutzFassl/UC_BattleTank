@@ -22,6 +22,9 @@ public:
 	virtual void BeginPlay() override;
 	virtual void Tick(float) override;
 
+	UFUNCTION(BlueprintCallable)
+	int32 GetActiveEnemies();
+
 protected:
 	UFUNCTION(BlueprintImplementableEvent, Category = Setup)
 	void FoundAimingComponent(UTankAimingComponent* AimCompRef);
