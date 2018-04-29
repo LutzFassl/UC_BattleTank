@@ -2,6 +2,7 @@
 
 #include "TankAIController.h"
 #include "TankAimingComponent.h"
+#include "Tank.h"	// so we can implement onDeath (Delegate)
 
 void ATankAIController::BeginPlay()
 {
@@ -26,5 +27,24 @@ void ATankAIController::Tick(float DeltaTime)
 	AimingComponent->AimAt(HitLocation);
 	if (AimingComponent->GetFiringState() == EFiringState::Locked) { AimingComponent->Fire(); }
 	return;
+}
+
+void ATankAIController::OnPossessedTankDeath()
+{
+	UE_LOG(LogTemp, Warning, TEXT("%s is dead."), *GetName());
+}
+
+void ATankAIController::SetPawn(APawn* InPawn)
+{
+	Super::SetPawn(InPawn);
+	if (InPawn)
+	{
+		auto PossessedTank = Cast<ATank>(InPawn);
+		if (!ensure(PossessedTank)) { return; }
+
+		// Subscribe our local method to the tanks death event = listener
+		//->OnTankDeath();
+		PossessedTank->OnDeath.AddUniqueDynamic(this, &ATankAIController::OnPossessedTankDeath);
+	}
 }
 

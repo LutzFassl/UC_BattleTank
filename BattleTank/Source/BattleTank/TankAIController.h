@@ -26,7 +26,11 @@ protected:
 	
 private:
 	virtual void BeginPlay();
+	virtual void SetPawn(APawn* InPawn) override;		// Gets called when ATankAIController is possessing the Tank
 	virtual void Tick(float) override;
+
+	UFUNCTION()
+	void OnPossessedTankDeath();
 
 	
 };

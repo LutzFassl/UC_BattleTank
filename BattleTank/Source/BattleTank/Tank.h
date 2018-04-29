@@ -6,6 +6,7 @@
 //#include "GameFramework/Actor.h"
 #include "Tank.generated.h"
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FTankDelegate);
 
 
 
@@ -18,6 +19,8 @@ public:
 	
 	UFUNCTION(BlueprintPure, Category = Health)		//BlueprintPure does not affect owning object. Like a "Blueprintcallable Readonly"
 	float GetHealthPercent() const;
+
+	FTankDelegate OnDeath;
 
 protected:
 
@@ -32,5 +35,7 @@ private:
 
 	UPROPERTY(VisibleAnywhere, Category = Health)
 	int32 CurrentHealth = StartingHealth;
+
+	
 	
 };
